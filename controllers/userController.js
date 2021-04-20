@@ -2,7 +2,7 @@ const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const userCtrl = {
+const userController = {
   register: async (req, res) => {
     try {
       const { name, password, email } = req.body;
@@ -97,4 +97,4 @@ const createRefreshToken = (user) => {
   return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };
 
-module.exports = userCtrl;
+module.exports = userController;
