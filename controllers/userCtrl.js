@@ -26,8 +26,38 @@ const userCtrl = {
         path: "/user/refresh_token",
       });
 
-      res.json({ accesstoken, refreshtoken });
-      // res.status(201).json({ msg: "Register Success!" });
+      res.status(201).json({ msg: "Register Success!" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await Users.findOne({ email });
+      if (!user) return res.status(400).json({ msg: "User doesnt exist!" });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) return res.status(400).json({ msg: "Incorrect password!" });
+
+      const accesstoken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/user/refresh_token",
+      });
+
+      return res.status(200).json({ msg: "Login success!", accesstoken, refreshtoken });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  logout: async (req, res) => {
+    try {
+      res.clearCookie("refreshtoken", { path: "/user/refresh_token" });
+
+      return res.status(200).json({ msg: "Logout success!" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -35,12 +65,24 @@ const userCtrl = {
   refreshToken: (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
+
       if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" });
+
       jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
         if (error) return res.status(400).json({ msg: "Please Login or Register" });
         const accesstoken = createAccessToken({ id: user.id });
         return res.json({ user, accesstoken });
       });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const user = await Users.findById(req.user.id).select("-password");
+      if (!user) return res.status(400).json({ msg: "User doesnt exist!" });
+
+      return res.status(200).json({ user });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
