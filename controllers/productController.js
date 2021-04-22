@@ -1,10 +1,36 @@
-const Product = require("../models/productModel");
+const Products = require("../models/productModel");
+
+class APIfeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+  filtering() {
+    const queryObj = { ...this.queryString };
+
+    const excludedFields = ["page", "sort", "limit"];
+    excludedFields.forEach((ele) => delete queryObj[ele]);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, (match) => "$" + match);
+
+    this.query.find(JSON.parse(queryStr));
+
+    return this;
+  }
+
+  sorting() {}
+
+  paginating() {}
+}
 
 const productController = {
   getProduct: async (req, res) => {
     try {
-      const product = await Product.find();
-      res.status(200).json({ product });
+      const features = new APIfeatures(Products.find(), req.query).filtering();
+      const products = await features.query;
+
+      res.status(200).json({ products });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -16,7 +42,7 @@ const productController = {
 
       const product = await Product.findOne({ product_id });
       if (product) return res.status(400).json({ msg: "Product already exist!" });
-      const newProduct = new Product({
+      const newProduct = new Products({
         product_id,
         title: title.toLowerCase(),
         price,
@@ -33,7 +59,7 @@ const productController = {
   },
   deleteProduct: async (req, res) => {
     try {
-      await Product.findByIdAndDelete(req.params.id);
+      await Products.findByIdAndDelete(req.params.id);
       return res.status(200).json({ msg: "Deleted a Product!" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
