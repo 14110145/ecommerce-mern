@@ -5,6 +5,7 @@ class APIfeatures {
     this.query = query;
     this.queryString = queryString;
   }
+
   filtering() {
     const queryObj = { ...this.queryString };
 
@@ -15,22 +16,39 @@ class APIfeatures {
     queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, (match) => "$" + match);
 
     this.query.find(JSON.parse(queryStr));
+    return this;
+  }
+
+  sorting() {
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(",").join("");
+      console.log(sortBy);
+      this.query = this.query.sort(sortBy);
+    } else {
+      this.query = this.query.sort("-createdAt");
+    }
 
     return this;
   }
 
-  sorting() {}
+  paginating() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 3;
+    const skip = (page - 1) * limit;
+    this.query = this.query.skip(skip).limit;
 
-  paginating() {}
+    return this;
+  }
 }
 
 const productController = {
   getProduct: async (req, res) => {
     try {
-      const features = new APIfeatures(Products.find(), req.query).filtering();
+      console.log(req.query);
+      const features = new APIfeatures(Products.find(), req.query).filtering().sorting().paginating();
       const products = await features.query;
 
-      res.status(200).json({ products });
+      res.status(200).json({ result: products.length, products });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -40,7 +58,7 @@ const productController = {
       const { product_id, title, price, description, content, images, category } = req.body;
       if (!images) return res.status(400).json({ msg: "No image upload!" });
 
-      const product = await Product.findOne({ product_id });
+      const product = await Products.findOne({ product_id });
       if (product) return res.status(400).json({ msg: "Product already exist!" });
       const newProduct = new Products({
         product_id,
