@@ -33,9 +33,9 @@ class APIfeatures {
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 3;
+    const limit = this.queryString.limit * 1 || 9;
     const skip = (page - 1) * limit;
-    this.query = this.query.skip(skip).limit;
+    this.query = this.query.skip(skip).limit();
 
     return this;
   }
@@ -48,7 +48,7 @@ const productController = {
       const features = new APIfeatures(Products.find(), req.query).filtering().sorting().paginating();
       const products = await features.query;
 
-      res.status(200).json({ result: products.length, products });
+      res.status(200).json({ products });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
