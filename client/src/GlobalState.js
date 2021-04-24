@@ -4,6 +4,11 @@ import ProductsAPI from "./api/ProductsAPI";
 export const GlobalState = createContext();
 
 export const DataProvider = ({ children }) => {
-  ProductsAPI();
-  return <GlobalState.Provider value={"value"}>{children}</GlobalState.Provider>;
+  const [token, setToken] = useState(false);
+  const state = {
+    token: [token, setToken],
+    productsAPI: ProductsAPI(),
+  };
+
+  return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
 };

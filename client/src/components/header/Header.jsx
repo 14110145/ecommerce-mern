@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import Menu from "./icon/iconBars.svg";
-import Close from "./icon/iconTimes.svg";
 import Cart from "./icon/iconShoppingCart.svg";
-import { Link } from "react-router-dom";
+import Close from "./icon/iconTimes.svg";
 
 const Header = () => {
   const value = useContext(GlobalState);
@@ -33,7 +33,7 @@ const Header = () => {
 
       <div className="cart-icon">
         <span>0</span>
-        <Link>
+        <Link to="#!">
           <img src={Cart} alt="" width="30" />
         </Link>
       </div>
