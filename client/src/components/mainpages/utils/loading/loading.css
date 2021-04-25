@@ -10,8 +10,8 @@
 }
 
 .loader div {
-  width: calc(100%-15px);
-  height: calc(100%-15px);
+  width: calc(100% - 15px);
+  height: calc(100% - 15px);
   border: 2px solid #fff;
   border-top: 2px solid crimson;
   border-radius: 50%;
