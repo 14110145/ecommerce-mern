@@ -8,12 +8,13 @@ export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
 
   const refreshToken = async () => {
-    const token = await axios.get(`/user/refresh_token`, { proxy: true });
-    console.log({ token });
+    const res = await axios.get(`/user/refresh_token`, { proxy: true });
+    setToken(res.data.accesstoken);
   };
 
   useEffect(() => {
-    refreshToken();
+    const firstLogin = localStorage.getItem("firstLogin");
+    if (firstLogin) refreshToken();
   }, []);
 
   const state = {
