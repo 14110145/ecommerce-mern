@@ -1,4 +1,4 @@
-.product_cart {
+.product_card {
   max-width: 300px;
   overflow: hidden;
   height: 500px;
@@ -6,13 +6,13 @@
   box-shadow: 0 0 12px #ddd;
   margin: 10px 0;
 }
-.product_cart img {
+.product_card img {
   width: 100%;
   height: 300px;
   display: block;
   object-fit: cover;
 }
-.product_cart span {
+.product_card span {
   color: crimson;
 }
 
@@ -59,4 +59,10 @@
 #btn_view {
   background-color: teal;
   margin-left: 5px;
+}
+
+.product_card input {
+  position: absolute;
+  width: 25px;
+  height: 25px;
 }

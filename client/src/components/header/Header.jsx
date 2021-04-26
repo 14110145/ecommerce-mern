@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
@@ -6,7 +7,48 @@ import Cart from "./icon/iconShoppingCart.svg";
 import Close from "./icon/iconTimes.svg";
 
 const Header = () => {
-  const value = useContext(GlobalState);
+  const state = useContext(GlobalState);
+  const [isLogged, setIsLogged] = state.userAPI.isLogged;
+  const [isAdmin, setIsAdmin] = state.userAPI.isAdmin;
+
+  const adminRouter = () => {
+    return (
+      <>
+        <li>
+          <Link to="/create-product">Create Product</Link>
+        </li>
+        <li>
+          <Link to="/category">Categories</Link>
+        </li>
+      </>
+    );
+  };
+
+  const logoutUser = async () => {
+    const res = await axios.get("/user/logout");
+    if (res.status === 200) {
+      localStorage.clear();
+      setIsLogged(false);
+      setIsAdmin(false);
+      alert(res.data.msg);
+    }
+  };
+
+  const loggedRouter = () => {
+    return (
+      <>
+        <li>
+          <Link to="/history">History</Link>
+        </li>
+        <li>
+          <Link to="/" onClick={logoutUser}>
+            Logout
+          </Link>
+        </li>
+      </>
+    );
+  };
+
   return (
     <header>
       <div className="menu">
@@ -15,28 +57,37 @@ const Header = () => {
 
       <div className="logo">
         <h1>
-          <Link to="/">Eco-Shop</Link>
+          <Link to="/">{isAdmin ? "admin" : "eco-shop"}</Link>
         </h1>
       </div>
 
       <ul>
         <li>
-          <Link to="/">Products</Link>
+          <Link to="/">{isAdmin ? "products" : "shopping"}</Link>
         </li>
-        <li>
-          <Link to="/login">Login - Register</Link>
-        </li>
+
+        {isAdmin && adminRouter()}
+        {isLogged ? (
+          loggedRouter()
+        ) : (
+          <li>
+            <Link to="/login">login - register</Link>
+          </li>
+        )}
+
         <li>
           <img src={Close} alt="" width="30" className="menu" />
         </li>
       </ul>
 
-      <div className="cart-icon">
-        <span>0</span>
-        <Link to="#!">
-          <img src={Cart} alt="" width="30" />
-        </Link>
-      </div>
+      {isAdmin ? null : (
+        <div className="cart-icon">
+          <span>0</span>
+          <Link to="#!">
+            <img src={Cart} alt="" width="30" />
+          </Link>
+        </div>
+      )}
     </header>
   );
 };
