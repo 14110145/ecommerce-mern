@@ -8,8 +8,9 @@ import Close from "./icon/iconTimes.svg";
 
 const Header = () => {
   const state = useContext(GlobalState);
-  const [isLogged, setIsLogged] = state.userAPI.isLogged;
-  const [isAdmin, setIsAdmin] = state.userAPI.isAdmin;
+  const [isLogged] = state.userAPI.isLogged;
+  const [isAdmin] = state.userAPI.isAdmin;
+  const [cart] = state.userAPI.cart;
 
   const adminRouter = () => {
     return (
@@ -28,8 +29,7 @@ const Header = () => {
     const res = await axios.get("/user/logout");
     if (res.status === 200) {
       localStorage.clear();
-      setIsLogged(false);
-      setIsAdmin(false);
+      window.location.href = "/";
       alert(res.data.msg);
     }
   };
@@ -82,8 +82,8 @@ const Header = () => {
 
       {isAdmin ? null : (
         <div className="cart-icon">
-          <span>0</span>
-          <Link to="#!">
+          <span>{cart.length ? cart.length : 0}</span>
+          <Link to="/cart">
             <img src={Cart} alt="" width="30" />
           </Link>
         </div>

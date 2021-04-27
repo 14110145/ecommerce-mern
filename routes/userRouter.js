@@ -14,4 +14,6 @@ route.get("/refresh_token", userController.refreshToken);
 
 route.get("/info", auth, userController.getUser);
 
+route.patch("/addcart", auth, userController.addCart);
+
 module.exports = route;

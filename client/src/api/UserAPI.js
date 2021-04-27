@@ -16,9 +16,10 @@ const UserAPI = (token) => {
           if (res.status === 200) {
             setIsLogged(true);
             if (res.data.user.role === 1) setIsAdmin(true);
+            setCart(res.data.user.cart);
           }
         } catch (error) {
-          alert(error.response.data.msg);
+          alert(error.message);
         }
       };
       getUser();
@@ -30,6 +31,11 @@ const UserAPI = (token) => {
     const check = cart.every((item) => item._id !== product._id);
     if (check) {
       setCart([...cart, { ...product, quantity: 1 }]);
+      await axios.patch(
+        "/user/addcart",
+        { cart: [...cart, { ...product, quantity: 1 }] },
+        { headers: { Authorization: token } }
+      );
     } else {
       alert("This product has been added to cart!");
     }
@@ -39,6 +45,7 @@ const UserAPI = (token) => {
     isLogged: [isLogged, setIsLogged],
     isAdmin: [isAdmin, setIsAdmin],
     addCart: addCart,
+    cart: [cart, setCart],
   };
 };
 

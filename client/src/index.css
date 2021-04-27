@@ -44,3 +44,6 @@ button {
 
 /* auth */
 @import url("./components/mainpages/auth/auth.css");
+
+/* cart */
+@import url("./components/mainpages/cart/cart.css");
