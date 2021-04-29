@@ -17,9 +17,8 @@ const OrderDetails = (props) => {
         }
       });
     }
-  }, [orderDetails]);
+  }, [params.id, history]);
 
-  console.log({ orderDetails });
   if (orderDetails.length === 0) return null;
 
   return (
@@ -58,7 +57,7 @@ const OrderDetails = (props) => {
           <tbody>
             {orderDetails.cart.map((item) => {
               return (
-                <tr>
+                <tr key={item._id}>
                   <td>
                     <img src={item.images.url} alt="" />
                   </td>
