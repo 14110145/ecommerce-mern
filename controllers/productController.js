@@ -85,12 +85,11 @@ const productController = {
   },
   updateProduct: async (req, res) => {
     try {
-      const { title, price, description, content, images, category } = req.body;
+      const { title, price, description, content, images, category, sold } = req.body;
       if (!images) return res.status(400).json({ msg: "No image upload!" });
-
-      await Product.findByIdAndUpdate(
+      await Products.findByIdAndUpdate(
         { _id: req.params.id },
-        { title: title.toLowerCase(), price, description, content, images, category }
+        { title: title.toLowerCase(), price, description, content, images, category, sold }
       );
 
       return res.status(200).json({ msg: "Updated a Product!" });

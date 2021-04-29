@@ -5,6 +5,8 @@ const UserAPI = (token) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [callback, setCallback] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -22,9 +24,22 @@ const UserAPI = (token) => {
           alert(error.message);
         }
       };
+
       getUser();
     }
   }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      const getHistory = async () => {
+        const res = await axios.get("/user/history", { headers: { Authorization: token } });
+        setHistory(res.data.history);
+        console.log({ res });
+      };
+
+      getHistory();
+    }
+  }, [token, callback]);
 
   const addCart = async (product) => {
     if (!isLogged) return alert("Please login to continue buying!");
@@ -46,6 +61,8 @@ const UserAPI = (token) => {
     isAdmin: [isAdmin, setIsAdmin],
     addCart: addCart,
     cart: [cart, setCart],
+    history: [history, setHistory],
+    callback: [callback, setCallback],
   };
 };
 

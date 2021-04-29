@@ -1,12 +1,15 @@
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
-import { Link } from "react-router-dom";
 import PaypalButton from "./PaypalButton";
 
 const Cart = () => {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.userAPI.cart;
   const [total, setTotal] = useState(0);
+  const [token] = state.token;
+  const updateProducts = state.productsAPI.updateProducts;
+  const [callback, setCallback] = state.userAPI.callback;
 
   useEffect(() => {
     const getTotal = () => {
@@ -20,6 +23,11 @@ const Cart = () => {
     getTotal();
   }, [cart]);
 
+  const addToCart = async (cart) => {
+    await axios.patch("/user/addcart", { cart }, { headers: { Authorization: token } });
+    setCart([...cart]);
+  };
+
   const increment = (id) => {
     cart.forEach((item) => {
       if (item._id === id) {
@@ -28,6 +36,7 @@ const Cart = () => {
     });
 
     setCart([...cart]);
+    addToCart(cart);
   };
 
   const decrement = (id) => {
@@ -40,6 +49,7 @@ const Cart = () => {
     });
 
     setCart([...cart]);
+    addToCart(cart);
   };
 
   const removeProduct = (id) => {
@@ -52,10 +62,31 @@ const Cart = () => {
     }
 
     setCart([...cart]);
+    addToCart(cart);
   };
 
-  const tranSuccess = (payment) => {
-    console.log({ payment });
+  const tranSuccess = async (payment) => {
+    const { paymentID, address } = payment;
+
+    await axios.post(
+      "/api/payment",
+      {
+        cart,
+        paymentID,
+        address,
+      },
+      { headers: { Authorization: token } }
+    );
+
+    cart.forEach(async (item) => {
+      item.sold += item.quantity;
+      await updateProducts(item, token);
+    });
+
+    setCart([]);
+    addToCart([]);
+    alert("You have successfully placed an order!");
+    setCallback(!callback);
   };
 
   if (cart.length === 0)

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
 import { GlobalState } from "../../../GlobalState";
 import ProductItem from "../utils/product_item/ProductItem";
 
@@ -7,7 +8,8 @@ const DetailProduct = () => {
   const params = useParams();
   const state = useContext(GlobalState);
   const [products] = state.productsAPI.products;
-  console.log({ products, params, state });
+  const addCart = state.userAPI.addCart;
+
   const [detailProduct, setDetailProduct] = useState("");
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const DetailProduct = () => {
           <p>{detailProduct.description}</p>
           <p>{detailProduct.content}</p>
           <p>Sold: {detailProduct.sold}</p>
-          <Link to="/cart" className="cart">
+          <Link to="/cart" className="cart" onClick={() => addCart(detailProduct)}>
             Buy now
           </Link>
         </div>
