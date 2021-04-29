@@ -32,14 +32,18 @@ const UserAPI = (token) => {
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
-        const res = await axios.get("/user/history", { headers: { Authorization: token } });
-        setHistory(res.data.history);
-        console.log({ res });
+        if (isAdmin) {
+          const res = await axios.get("/api/payment", { headers: { Authorization: token } });
+          setHistory(res.data.payment);
+        } else {
+          const res = await axios.get("/user/history", { headers: { Authorization: token } });
+          setHistory(res.data.history);
+        }
       };
 
       getHistory();
     }
-  }, [token, callback]);
+  }, [token, callback, isAdmin]);
 
   const addCart = async (product) => {
     if (!isLogged) return alert("Please login to continue buying!");

@@ -5,7 +5,7 @@ const Products = require("../models/productModel");
 const paymentController = {
   getPayment: async (req, res) => {
     try {
-      const payment = await Payments.find({});
+      const payment = await Payments.find();
       return res.status(200).json({ payment });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
