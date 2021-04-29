@@ -6,6 +6,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Cart from "./cart/Cart";
 import DetailProduct from "./detailProduct/DetailProduct";
+import OrderDetails from "./history/OrderDetails";
 import OrderHistory from "./history/OrderHistory";
 import Products from "./products/Products";
 import NotFound from "./utils/not_found/NotFound";
@@ -24,6 +25,7 @@ const Pages = () => {
       <Route path="/register" exact component={isLogged ? NotFound : Register} />
 
       <Route path="/history" exact component={isLogged ? OrderHistory : NotFound} />
+      <Route path="/history/:id" exact component={isLogged ? OrderDetails : NotFound} />
 
       <Route path="/cart" exact component={Cart} />
 

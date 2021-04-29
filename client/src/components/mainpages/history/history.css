@@ -9,6 +9,12 @@
   letter-spacing: 1.2px;
 }
 
+.history-page img {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+}
+
 .history-page table {
   margin: auto;
   width: 100%;
