@@ -1,13 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProductsAPI = () => {
   const [products, setProducts] = useState([]);
+  const [callbackProductAPI, setCallbackProductAPI] = useState(false);
 
-  const getProducts = async () => {
-    const res = await axios.get("/api/products");
-    setProducts(res.data.products);
-  };
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await axios.get("/api/products");
+      setProducts(res.data.products);
+    };
+
+    getProducts();
+  }, [callbackProductAPI]);
 
   const updateProducts = async (product, token) => {
     await axios.put(`/api/products/${product._id}`, product, { headers: { Authorization: token } });
@@ -16,7 +21,7 @@ const ProductsAPI = () => {
   return {
     products: [products, setProducts],
     updateProducts: updateProducts,
-    getProducts: getProducts,
+    callbackProductAPI: [callbackProductAPI, setCallbackProductAPI],
   };
 };
 

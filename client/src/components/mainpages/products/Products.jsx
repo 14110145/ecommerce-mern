@@ -6,12 +6,13 @@ import ProductItem from "../utils/product_item/ProductItem.jsx";
 const Products = () => {
   const state = useContext(GlobalState);
   const [products] = state.productsAPI.products;
-  const getProducts = state.productsAPI.getProducts;
   const [isAdmin] = state.userAPI.isAdmin;
+  const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
 
   useEffect(() => {
-    console.log("Effect products");
-    getProducts();
+    console.log("Run effect Products");
+    setCallbackProductAPI(!callbackProductAPI);
+    // eslint-disable-next-line
   }, []);
 
   return (

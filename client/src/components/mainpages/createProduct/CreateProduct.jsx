@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
-import { useHistory } from "react-router-dom";
 
 const initialState = {
   product_id: "",
@@ -13,18 +13,44 @@ const initialState = {
   content:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis molestias, aspernatur sunt aliquid, velit, unde incidunt deserunt officia eos sed vitae laudantium explicabo possimus quisquam! Placeat harum nemo inventore assumenda.",
   category: "",
+  _id: "",
 };
 
 const CreateProduct = () => {
   const state = useContext(GlobalState);
   const [product, setProduct] = useState(initialState);
-  const [categories] = state.categoriesAPI.categories;
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [categories] = state.categoriesAPI.categories;
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
+  const [products] = state.productsAPI.products;
+  const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
+
+  const [onEdit, setOnEdit] = useState(false);
 
   const history = useHistory();
+  const param = useParams();
+
+  useEffect(() => {
+    console.log("Run effect create product");
+    if (param.id) {
+      setCallbackProductAPI(!callbackProductAPI);
+      setOnEdit(true);
+      products.forEach((product) => {
+        if (product._id === param.id) {
+          setProduct(product);
+          setImages(product.images);
+        }
+      });
+    } else {
+      setProduct(initialState);
+      setImages(false);
+    }
+    // eslint-disable-next-line
+  }, [param.id]);
+
   const styleUpload = { display: images ? "block" : "none" };
 
   const handleUpload = async (e) => {
@@ -69,7 +95,11 @@ const CreateProduct = () => {
     try {
       if (!isAdmin) return alert("You are not admin!");
       if (!images) return alert("No image upload!");
-      await axios.post("/api/products", { ...product, images }, { headers: { Authorization: token } });
+      if (onEdit) {
+        await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
+      } else {
+        await axios.post("/api/products", { ...product, images }, { headers: { Authorization: token } });
+      }
       setImages(false);
       setProduct(initialState);
       history.push("/");
@@ -104,6 +134,7 @@ const CreateProduct = () => {
             required
             value={product.product_id}
             onChange={handleChangeInput}
+            disabled={onEdit}
           />
         </div>
 
@@ -156,7 +187,7 @@ const CreateProduct = () => {
             })}
           </select>
         </div>
-        <button type="submit">Create</button>
+        <button type="submit">{onEdit ? "Update" : "Create"}</button>
       </form>
     </div>
   );
