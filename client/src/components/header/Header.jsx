@@ -16,7 +16,7 @@ const Header = () => {
     return (
       <>
         <li>
-          <Link to="/create-product">Create Product</Link>
+          <Link to="/create_product">Create Product</Link>
         </li>
         <li>
           <Link to="/category">Categories</Link>
@@ -28,6 +28,7 @@ const Header = () => {
   const logoutUser = async () => {
     const res = await axios.get("/user/logout");
     if (res.status === 200) {
+      localStorage.removeItem("firstLogin");
       window.location.href = "/";
       alert(res.data.msg);
     }

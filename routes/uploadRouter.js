@@ -30,7 +30,7 @@ route.post("/upload", (req, res) => {
     cloudinary.uploader.upload(file.tempFilePath, { folder: "ecommerce-mern" }, (error, result) => {
       if (error) throw error;
       removeTmp(file.tempFilePath);
-      return res.status(201).json({ result });
+      return res.status(201).json(result);
     });
 
     // return res.status(200).json({ msg: "File uploaded!" });
