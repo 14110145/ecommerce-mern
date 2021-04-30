@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ProductsAPI = () => {
   const [products, setProducts] = useState([]);
@@ -13,13 +13,10 @@ const ProductsAPI = () => {
     await axios.put(`/api/products/${product._id}`, product, { headers: { Authorization: token } });
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
   return {
     products: [products, setProducts],
     updateProducts: updateProducts,
+    getProducts: getProducts,
   };
 };
 

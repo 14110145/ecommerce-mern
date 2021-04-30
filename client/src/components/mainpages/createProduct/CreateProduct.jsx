@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
+import { useHistory } from "react-router-dom";
 
 const initialState = {
   product_id: "",
@@ -23,6 +24,7 @@ const CreateProduct = () => {
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
+  const history = useHistory();
   const styleUpload = { display: images ? "block" : "none" };
 
   const handleUpload = async (e) => {
@@ -45,8 +47,6 @@ const CreateProduct = () => {
 
     setImages(res.data);
     setLoading(false);
-
-    console.log({ res });
   };
 
   const handleDestroy = async () => {
@@ -60,8 +60,22 @@ const CreateProduct = () => {
   };
 
   const handleChangeInput = (e) => {
-    const { name, value } = e;
+    const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!isAdmin) return alert("You are not admin!");
+      if (!images) return alert("No image upload!");
+      await axios.post("/api/products", { ...product, images }, { headers: { Authorization: token } });
+      setImages(false);
+      setProduct(initialState);
+      history.push("/");
+    } catch (error) {
+      return alert(error.response.data.msg);
+    }
   };
 
   return (
@@ -80,7 +94,7 @@ const CreateProduct = () => {
         )}
       </div>
 
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="product_id">ProductID</label>
           <input
