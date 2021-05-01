@@ -43,7 +43,7 @@ const DetailProduct = () => {
         </div>
       </div>
       <div>
-        <h2>Related Product</h2>
+        <h2 style={{ marginLeft: "15px" }}>Related Product</h2>
         <div className="products">
           {products.map((product) => {
             return product.category === detailProduct.category ? (

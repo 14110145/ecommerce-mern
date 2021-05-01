@@ -12,7 +12,7 @@ const Filter = () => {
   return (
     <div className="filter_menu">
       <div className="row">
-        <span>Filter:</span>
+        <span>Filter </span>
         <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">All products</option>
           {categories.map((category) => {
@@ -33,7 +33,7 @@ const Filter = () => {
       />
 
       <div className="row">
-        <span>Sort by:</span>
+        <span>Sort by </span>
         <select name="category" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="">Newest</option>
           <option value="sort=oldest">Oldest</option>

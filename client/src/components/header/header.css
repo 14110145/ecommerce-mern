@@ -7,11 +7,11 @@ header {
   align-items: center;
   justify-content: space-around;
   border-bottom: 1px solid #ddd;
-  margin: 0 5px;
 }
 
 header .logo {
   flex: 1;
+  margin-left: 15px;
 }
 
 header a {
