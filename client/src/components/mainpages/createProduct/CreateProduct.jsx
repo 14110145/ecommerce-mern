@@ -27,14 +27,12 @@ const CreateProduct = () => {
   const [token] = state.token;
   const [products] = state.productsAPI.products;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
-
   const [onEdit, setOnEdit] = useState(false);
 
   const history = useHistory();
   const param = useParams();
 
   useEffect(() => {
-    console.log("Run effect create product");
     if (param.id) {
       setCallbackProductAPI(!callbackProductAPI);
       setOnEdit(true);
@@ -48,6 +46,7 @@ const CreateProduct = () => {
       setProduct(initialState);
       setImages(false);
     }
+
     // eslint-disable-next-line
   }, [param.id]);
 
@@ -102,6 +101,7 @@ const CreateProduct = () => {
       }
       setImages(false);
       setProduct(initialState);
+      setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
       return alert(error.response.data.msg);

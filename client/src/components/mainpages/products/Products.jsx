@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
+import Filter from "../utils/filter/Filter";
 import Loading from "../utils/loading/Loading";
+import Loadmore from "../utils/loadmore/Loadmore";
 import ProductItem from "../utils/product_item/ProductItem.jsx";
 
 const Products = () => {
@@ -9,16 +11,15 @@ const Products = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const [products, setProducts] = state.productsAPI.products;
-  const getProducts = state.productsAPI.getProducts;
   const [isAdmin] = state.userAPI.isAdmin;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
   const deleteProducts = state.productsAPI.deleteProducts;
 
-  useEffect(() => {
-    console.log("Run effect Products");
-    getProducts();
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   console.log("Run effect Products");
+  //   setCallbackProductAPI(!callbackProductAPI);
+  //   // eslint-disable-next-line
+  // }, []);
 
   const checkAll = () => {
     setIsChecked(!isChecked);
@@ -33,8 +34,8 @@ const Products = () => {
       if (product.checked) {
         setLoading(true);
         await deleteProducts(product._id, product.images.public_id);
-        await getProducts();
         setLoading(false);
+        setCallbackProductAPI(!callbackProductAPI);
       }
     });
   };
@@ -48,6 +49,7 @@ const Products = () => {
 
   return (
     <>
+      <Filter />
       {isAdmin && (
         <div className="delete-all">
           <span>select all</span>
@@ -60,6 +62,7 @@ const Products = () => {
           <ProductItem key={product._id} product={product} isAdmin={isAdmin} />
         ))}
       </div>
+      <Loadmore />
       {products.length === 0 && <Loading />}
     </>
   );

@@ -9,18 +9,18 @@ const ProductItem = ({ product, isAdmin }) => {
 
   const addCart = state.userAPI.addCart;
   const [products, setProducts] = state.productsAPI.products;
-  const deleteProducts = state.productsAPI.deleteProducts;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
+  const deleteProducts = state.productsAPI.deleteProducts;
 
   const deleteProductBtn = async () => {
     try {
       setLoading(true);
       await deleteProducts(product._id, product.images.public_id);
       setLoading(false);
-      setCallbackProductAPI(!callbackProductAPI);
     } catch (error) {
       return alert(error.response.data.msg);
     }
+    setCallbackProductAPI(!callbackProductAPI);
   };
 
   const handleCheck = () => {
