@@ -1,22 +1,60 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
 import ProductItem from "../utils/product_item/ProductItem.jsx";
 
 const Products = () => {
   const state = useContext(GlobalState);
-  const [products] = state.productsAPI.products;
+  const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [products, setProducts] = state.productsAPI.products;
+  const getProducts = state.productsAPI.getProducts;
   const [isAdmin] = state.userAPI.isAdmin;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
+  const deleteProducts = state.productsAPI.deleteProducts;
 
   useEffect(() => {
     console.log("Run effect Products");
-    setCallbackProductAPI(!callbackProductAPI);
+    getProducts();
     // eslint-disable-next-line
   }, []);
 
+  const checkAll = () => {
+    setIsChecked(!isChecked);
+    products.forEach((product) => {
+      product.checked = !isChecked;
+    });
+    setProducts([...products]);
+  };
+
+  const deleteAll = () => {
+    products.forEach(async (product) => {
+      if (product.checked) {
+        setLoading(true);
+        await deleteProducts(product._id, product.images.public_id);
+        await getProducts();
+        setLoading(false);
+      }
+    });
+  };
+
+  if (loading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+
   return (
     <>
+      {isAdmin && (
+        <div className="delete-all">
+          <span>select all</span>
+          <input type="checkbox" checked={isChecked} onChange={checkAll} />
+          <button onClick={deleteAll}>delete select</button>
+        </div>
+      )}
       <div className="products">
         {products.map((product) => (
           <ProductItem key={product._id} product={product} isAdmin={isAdmin} />

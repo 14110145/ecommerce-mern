@@ -1,22 +1,21 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../../GlobalState";
 import Loading from "../loading/Loading";
 import BtnRender from "./BtnRender";
 
-function ProductItem({ product, isAdmin }) {
+const ProductItem = ({ product, isAdmin }) => {
   const state = useContext(GlobalState);
   const [loading, setLoading] = useState(false);
 
-  const updateProducts = state.productsAPI.updateProducts;
+  const addCart = state.userAPI.addCart;
+  const [products, setProducts] = state.productsAPI.products;
+  const deleteProducts = state.productsAPI.deleteProducts;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
-  const [token] = state.token;
 
-  const deleteProduct = async () => {
+  const deleteProductBtn = async () => {
     try {
       setLoading(true);
-      await axios.post("/api/destroy", { public_id: product.images.public_id }, { headers: { Authorization: token } });
-      await axios.delete(`/api/products/${product._id}`, { headers: { Authorization: token } });
+      await deleteProducts(product._id, product.images.public_id);
       setLoading(false);
       setCallbackProductAPI(!callbackProductAPI);
     } catch (error) {
@@ -26,8 +25,7 @@ function ProductItem({ product, isAdmin }) {
 
   const handleCheck = () => {
     product.checked = !product.checked;
-    updateProducts(product, token);
-    setCallbackProductAPI(!callbackProductAPI);
+    setProducts([...products]);
   };
 
   if (loading)
@@ -49,9 +47,14 @@ function ProductItem({ product, isAdmin }) {
         <p>{product.description}</p>
       </div>
 
-      <BtnRender product={product} deleteProduct={deleteProduct} />
+      <BtnRender
+        isAdmin={isAdmin}
+        product={product}
+        addCartBtn={() => addCart(product)}
+        deleteProductBtn={deleteProductBtn}
+      />
     </div>
   );
-}
+};
 
 export default ProductItem;

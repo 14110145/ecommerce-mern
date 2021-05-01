@@ -46,7 +46,7 @@ const UserAPI = (token) => {
   return {
     isLogged: [isLogged, setIsLogged],
     isAdmin: [isAdmin, setIsAdmin],
-    addCart: addCart,
+    addCart,
     cart: [cart, setCart],
     history: [history, setHistory],
   };
