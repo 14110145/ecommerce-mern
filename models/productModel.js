@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema(
     },
     description: { type: String, required: true },
     content: { type: String, required: true },
-    images: { type: Object, required: true },
+    images: { type: Array, required: true },
     category: { type: String, required: true },
     checked: { type: Boolean, default: false },
     sold: { type: Number, default: 0 },
