@@ -21,7 +21,6 @@ route.post("/upload", upload.array("image"), async (req, res) => {
     if (req.method == "POST") {
       const urls = [];
       const files = req.files;
-
       for (file of files) {
         const { path } = file;
         const newPath = await uploader(path);
@@ -57,17 +56,26 @@ route.post("/upload", upload.array("image"), async (req, res) => {
   // }
 });
 
-route.post("/destroy", auth, authAdmin, (req, res) => {
+route.post("/destroy", auth, authAdmin, async (req, res) => {
   // try {
   //   const { public_id } = req.body;
   //   if (!public_id) return res.status(400).json({ msg: "No image selected!" });
-  //   cloudinary.uploader.destroy(public_id, async (error, result) => {
+  //   cloudinary.destroy(public_id, async (error, result) => {
   //     if (error) throw error;
   //     res.status(200).json({ msg: "Deleted image!" });
   //   });
   // } catch (error) {
   //   return res.status(500).json({ msg: error.message });
   // }
+
+  try {
+    const { public_id } = req.body;
+    if (!public_id) return res.status(400).json({ msg: "No image selected!" });
+    const result = await cloudinary.destroy(public_id);
+    return res.status(200).json({ msg: "Deleted image", result });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
 });
 
 const removeTmp = (path) => {

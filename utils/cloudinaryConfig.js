@@ -9,7 +9,16 @@ cloudinary.config({
 exports.uploads = (file, folder) => {
   return new Promise((resolve) => {
     cloudinary.uploader.upload(file, { folder }, (error, result) => {
-      resolve({ url: result.url, id: result.public_id });
+      resolve({ url: result.url, public_id: result.public_id });
+    });
+  });
+};
+
+exports.destroy = (public_id) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(public_id, async (error, result) => {
+      if (error) reject(error);
+      resolve(result);
     });
   });
 };
