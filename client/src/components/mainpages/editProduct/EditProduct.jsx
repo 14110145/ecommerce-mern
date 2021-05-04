@@ -9,6 +9,7 @@ const EditProduct = () => {
   const [product, setProduct] = useState();
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imagesDelete, setImagesDelete] = useState([]);
 
   const [categories] = state.categoriesAPI.categories;
   const [isAdmin] = state.userAPI.isAdmin;
@@ -31,7 +32,6 @@ const EditProduct = () => {
     }
     // eslint-disable-next-line
   }, [param.id]);
-
   const styleUpload = { display: Array.isArray(images) ? "inline-block" : "none" };
 
   const handleUpload = async (e) => {
@@ -78,9 +78,12 @@ const EditProduct = () => {
       if (!isAdmin) return alert("You are not admin!");
       if (!images) return alert("No image upload!");
       if (images.length === 0) return alert("Image not yet selected!");
+      if (imagesDelete.length !== 0) {
+        imagesDelete.map(async (img) => {
+          await axios.post("/api/destroy", { public_id: img.public_id }, { headers: { Authorization: token } });
+        });
+      }
       await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
-
-      setImages(false);
       setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
@@ -89,8 +92,11 @@ const EditProduct = () => {
   };
 
   const removeImage = (index) => {
+    imagesDelete.push(images[index]);
+    setImagesDelete([...imagesDelete]);
     images.splice(index, 1);
     setImages([...images]);
+    console.log({ imagesDelete, images });
   };
 
   if (loading)
