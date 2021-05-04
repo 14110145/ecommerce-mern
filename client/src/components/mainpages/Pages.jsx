@@ -7,6 +7,7 @@ import Cart from "./cart/Cart";
 import Categories from "./categories/Categories";
 import CreateProduct from "./createProduct/CreateProduct";
 import DetailProduct from "./detailProduct/DetailProduct";
+import EditProduct from "./editProduct/EditProduct";
 import OrderDetails from "./history/OrderDetails";
 import OrderHistory from "./history/OrderHistory";
 import Products from "./products/Products";
@@ -30,7 +31,7 @@ const Pages = () => {
       <Route path="/category" exact component={isAdmin ? Categories : NotFound} />
 
       <Route path="/create_product" exact component={isAdmin ? CreateProduct : NotFound} />
-      <Route path="/edit_product/:id" exact component={isAdmin ? CreateProduct : NotFound} />
+      <Route path="/edit_product/:id" exact component={isAdmin ? EditProduct : NotFound} />
 
       <Route path="/history" exact component={isLogged ? OrderHistory : NotFound} />
       <Route path="/history/:id" exact component={isLogged ? OrderDetails : NotFound} />

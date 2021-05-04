@@ -20,7 +20,7 @@ route.post("/upload", auth, authAdmin, upload.array("image"), async (req, res) =
         urls.push(newPath);
         fs.unlinkSync(path);
       }
-      return res.status(200).json({ msg: "Images Uploaded Successfully!", data: urls });
+      return res.status(200).json(urls);
     } else {
       return res.status(400).json({ error: "Images not Uploaded Successfully!" });
     }
@@ -39,11 +39,5 @@ route.post("/destroy", auth, authAdmin, async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
-
-const removeTmp = (path) => {
-  fs.unlink(path, (error) => {
-    if (error) throw error;
-  });
-};
 
 module.exports = route;

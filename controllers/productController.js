@@ -91,7 +91,6 @@ const productController = {
         { _id: req.params.id },
         { title: title.toLowerCase(), price, description, content, images, category, sold }
       );
-
       return res.status(200).json({ msg: "Updated a Product!" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });

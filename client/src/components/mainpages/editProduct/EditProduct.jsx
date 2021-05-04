@@ -1,33 +1,36 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
 
-const initialState = {
-  product_id: "",
-  title: "",
-  price: 0,
-  description:
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae aut odit exercitationem! Id, veniam debitis assumenda distinctio eaque vitae possimus beatae, sit, ea deleniti temporibus? Molestiae sint possimus recusandae veniam.",
-  content:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis molestias, aspernatur sunt aliquid, velit, unde incidunt deserunt officia eos sed vitae laudantium explicabo possimus quisquam! Placeat harum nemo inventore assumenda.",
-  category: "",
-  _id: "",
-};
-
-const CreateProduct = () => {
+const EditProduct = () => {
   const state = useContext(GlobalState);
-  const [product, setProduct] = useState(initialState);
+  const [product, setProduct] = useState();
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [categories] = state.categoriesAPI.categories;
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
+  const [products] = state.productsAPI.products;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
 
   const history = useHistory();
+  const param = useParams();
+
+  useEffect(() => {
+    if (param.id) {
+      setCallbackProductAPI(!callbackProductAPI);
+      products.forEach((product) => {
+        if (product._id === param.id) {
+          setProduct(product);
+          setImages(product.images);
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, [param.id]);
 
   const styleUpload = { display: Array.isArray(images) ? "inline-block" : "none" };
 
@@ -35,20 +38,34 @@ const CreateProduct = () => {
     e.preventDefault();
     if (!isAdmin) return alert("You are not a admin!");
     const files = e.target.files;
+    const formData = new FormData();
     for (let file of files) {
       if (!file) return alert("Plese select a image!");
 
       if (file.size > 1024 * 1024) return alert("Image size too large!");
 
       // if (file.type !== "image/jpeg" && file !== "image/png") return alert("Image format is incorrect!");
+
+      formData.append("image", file);
     }
-    setImages([...files]);
+    const res = await axios.post("/api/upload", formData, {
+      headers: { "content-type": "multipart/form-data", Authorization: token },
+    });
+    await axios.post("/api/products", { ...product, images: res.data }, { headers: { Authorization: token } });
   };
 
-  const removeImage = (index) => {
-    images.splice(index, 1);
-    setImages([...images]);
-  };
+  // const handleDestroy = async (public_id) => {
+  //   try {
+  //     if (!isAdmin) return alert("You are not admin!");
+  //     const res = await axios.post("/api/destroy", { public_id }, { headers: { Authorization: token } });
+  //     if (res.result === "ok") {
+  //       await axios.put(`/api/products/${product._id}`, { ...product }, { headers: { Authorization: token } });
+  //     }
+  //     setCallbackProductAPI(!callbackProductAPI);
+  //   } catch (error) {
+  //     return alert(error.response.data.msg);
+  //   }
+  // };
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -60,26 +77,22 @@ const CreateProduct = () => {
     try {
       if (!isAdmin) return alert("You are not admin!");
       if (!images) return alert("No image upload!");
-
-      setLoading(true);
-      let formData = new FormData();
-      for (let image of images) {
-        formData.append("image", image);
-      }
-      const res = await axios.post("/api/upload", formData, {
-        headers: { "content-type": "multipart/form-data", Authorization: token },
-      });
-      await axios.post("/api/products", { ...product, images: res.data }, { headers: { Authorization: token } });
-      setLoading(false);
+      if (images.length === 0) return alert("Image not yet selected!");
+      await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
 
       setImages(false);
-      setProduct(initialState);
       setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
       return alert(error.response.data.msg);
     }
   };
+
+  const removeImage = (index) => {
+    images.splice(index, 1);
+    setImages([...images]);
+  };
+
   if (loading)
     return (
       <div className="create_product">
@@ -88,6 +101,8 @@ const CreateProduct = () => {
         </div>
       </div>
     );
+
+  if (!product) return null;
 
   return (
     <div className="create_product">
@@ -102,7 +117,7 @@ const CreateProduct = () => {
           images.map((image, index) => {
             return (
               <div className="file_img" style={styleUpload} key={index}>
-                <img key={index} src={URL.createObjectURL(image)} alt="" style={{ display: "inline" }} />
+                <img key={index} src={image.url} alt="" style={{ display: "inline" }} />
                 <span onClick={() => removeImage(index)}>X</span>
               </div>
             );
@@ -119,6 +134,7 @@ const CreateProduct = () => {
             required
             value={product.product_id}
             onChange={handleChangeInput}
+            disabled={true}
           />
         </div>
 
@@ -171,10 +187,10 @@ const CreateProduct = () => {
             })}
           </select>
         </div>
-        <button type="submit">Create</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
 };
 
-export default CreateProduct;
+export default EditProduct;

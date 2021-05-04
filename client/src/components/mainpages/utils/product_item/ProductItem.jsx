@@ -39,9 +39,7 @@ const ProductItem = ({ product, isAdmin }) => {
     <div className="product_card">
       {isAdmin && <input type="checkbox" checked={product.checked} onChange={handleCheck} />}
 
-      {product.images.map((image) => {
-        return <img src={image.url} alt="" />;
-      })}
+      <img src={product.images[0].url} />
 
       <div className="product_box">
         <h2 title={product.title}>{product.title}</h2>

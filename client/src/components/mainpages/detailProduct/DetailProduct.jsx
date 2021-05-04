@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { GlobalState } from "../../../GlobalState";
@@ -10,7 +10,14 @@ const DetailProduct = () => {
   const [products] = state.productsAPI.products;
   const addCart = state.userAPI.addCart;
 
+  const [indexBigImg, setIndexBigImg] = useState(0);
   const [detailProduct, setDetailProduct] = useState("");
+  const myRef = useRef();
+
+  // useEffect(() => {
+  //   handleTab(indexBigImg);
+  //   // eslint-disable-next-line
+  // }, []);
 
   useEffect(() => {
     if (params.id) {
@@ -22,12 +29,31 @@ const DetailProduct = () => {
     }
   }, [params, products]);
 
-  if (detailProduct.length === 0) return null;
+  console.log({ myRef });
+  const handleTab = (index) => {
+    setIndexBigImg(index);
+    const images = myRef.current.children;
+    for (let image of images) {
+      image.className = "";
+    }
+    images[index].className = "active";
+  };
 
+  if (detailProduct.length === 0) return null;
+  {
+    console.log({ detailProduct });
+  }
   return (
     <>
       <div className="detail">
-        <img src={detailProduct.images.url} alt="" />
+        <div className="big-img">
+          <img src={detailProduct.images[indexBigImg].url} alt="" />
+          <div className="thumb" ref={myRef}>
+            {detailProduct.images.map((image, index) => (
+              <img src={image.url} alt="" key={index} onClick={() => handleTab(index)} />
+            ))}
+          </div>
+        </div>
         <div className="box-detail">
           <div className="row">
             <h2>{detailProduct.title}</h2>
