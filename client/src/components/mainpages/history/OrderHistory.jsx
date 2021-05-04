@@ -18,7 +18,6 @@ const Orderhistory = (props) => {
           setHistory(res.data.payment);
         } else {
           const res = await axios.get("/user/history", { headers: { Authorization: token } });
-          console.log({ res });
           setHistory(res.data.history);
         }
       };

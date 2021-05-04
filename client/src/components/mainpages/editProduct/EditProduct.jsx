@@ -1,4 +1,5 @@
 import axios from "axios";
+import { set } from "mongoose";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
@@ -10,6 +11,7 @@ const EditProduct = () => {
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imagesDelete, setImagesDelete] = useState([]);
+  const [preview, setPreview] = useState([]);
 
   const [categories] = state.categoriesAPI.categories;
   const [isAdmin] = state.userAPI.isAdmin;
@@ -47,26 +49,10 @@ const EditProduct = () => {
       // if (file.type !== "image/jpeg" && file !== "image/png") return alert("Image format is incorrect!");
 
       formData.append("image", file);
+      images.push(file);
     }
-    const res = await axios.post("/api/upload", formData, {
-      headers: { "content-type": "multipart/form-data", Authorization: token },
-    });
-    await axios.post("/api/products", { ...product, images: res.data }, { headers: { Authorization: token } });
+    setImages([...images]);
   };
-
-  // const handleDestroy = async (public_id) => {
-  //   try {
-  //     if (!isAdmin) return alert("You are not admin!");
-  //     const res = await axios.post("/api/destroy", { public_id }, { headers: { Authorization: token } });
-  //     if (res.result === "ok") {
-  //       await axios.put(`/api/products/${product._id}`, { ...product }, { headers: { Authorization: token } });
-  //     }
-  //     setCallbackProductAPI(!callbackProductAPI);
-  //   } catch (error) {
-  //     return alert(error.response.data.msg);
-  //   }
-  // };
-
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
@@ -80,14 +66,34 @@ const EditProduct = () => {
       if (images.length === 0) return alert("Image not yet selected!");
       if (imagesDelete.length !== 0) {
         imagesDelete.map(async (img) => {
+          if (!img.public_id) return;
           await axios.post("/api/destroy", { public_id: img.public_id }, { headers: { Authorization: token } });
         });
       }
-      await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
+      const checkImages = images.every((image) => "public_id" in image);
+      if (checkImages) {
+        await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
+      } else {
+        let formData = new FormData();
+
+        for (let image of images) {
+          formData.append("image", image);
+        }
+        const res = await axios.post("/api/upload", formData, {
+          headers: { "content-type": "multipart/form-data", Authorization: token },
+        });
+
+        await axios.put(
+          `/api/products/${product._id}`,
+          { ...product, images: res.data },
+          { headers: { Authorization: token } }
+        );
+      }
+
       setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
-      return alert(error.response.data.msg);
+      return alert(error);
     }
   };
 
@@ -123,7 +129,12 @@ const EditProduct = () => {
           images.map((image, index) => {
             return (
               <div className="file_img" style={styleUpload} key={index}>
-                <img key={index} src={image.url} alt="" style={{ display: "inline" }} />
+                <img
+                  key={index}
+                  src={image.url ? image.url : URL.createObjectURL(image)}
+                  alt=""
+                  style={{ display: "inline" }}
+                />
                 <span onClick={() => removeImage(index)}>X</span>
               </div>
             );
