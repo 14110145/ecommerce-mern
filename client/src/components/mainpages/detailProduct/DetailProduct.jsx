@@ -9,15 +9,9 @@ const DetailProduct = () => {
   const state = useContext(GlobalState);
   const [products] = state.productsAPI.products;
   const addCart = state.userAPI.addCart;
-
   const [indexBigImg, setIndexBigImg] = useState(0);
   const [detailProduct, setDetailProduct] = useState("");
   const myRef = useRef();
-
-  // useEffect(() => {
-  //   handleTab(indexBigImg);
-  //   // eslint-disable-next-line
-  // }, []);
 
   useEffect(() => {
     if (params.id) {
@@ -27,22 +21,22 @@ const DetailProduct = () => {
         }
       });
     }
-  }, [params, products]);
+    // eslint-disable-next-line
+  }, [params]);
 
-  console.log({ myRef });
   const handleTab = (index) => {
-    setIndexBigImg(index);
-    const images = myRef.current.children;
-    for (let image of images) {
-      image.className = "";
+    if (myRef.current) {
+      const images = myRef.current.children;
+      for (let image of images) {
+        image.className = "";
+      }
+      images[index].className = "active";
+      setIndexBigImg(index);
     }
-    images[index].className = "active";
   };
 
   if (detailProduct.length === 0) return null;
-  {
-    console.log({ detailProduct });
-  }
+
   return (
     <>
       <div className="detail">
@@ -50,7 +44,13 @@ const DetailProduct = () => {
           <img src={detailProduct.images[indexBigImg].url} alt="" />
           <div className="thumb" ref={myRef}>
             {detailProduct.images.map((image, index) => (
-              <img src={image.url} alt="" key={index} onClick={() => handleTab(index)} />
+              <img
+                src={image.url}
+                alt=""
+                key={index}
+                onClick={() => handleTab(index)}
+                className={index === 0 ? "active" : ""}
+              />
             ))}
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import Filter from "../utils/filter/Filter";
 import Loading from "../utils/loading/Loading";
@@ -15,12 +15,6 @@ const Products = () => {
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
   const deleteProducts = state.productsAPI.deleteProducts;
 
-  // useEffect(() => {
-  //   console.log("Run effect Products");
-  //   setCallbackProductAPI(!callbackProductAPI);
-  //   // eslint-disable-next-line
-  // }, []);
-
   const checkAll = () => {
     setIsChecked(!isChecked);
     products.forEach((product) => {
@@ -33,9 +27,9 @@ const Products = () => {
     products.forEach(async (product) => {
       if (product.checked) {
         setLoading(true);
-        await deleteProducts(product._id, product.images.public_id);
-        setLoading(false);
+        await deleteProducts(product._id, product.images);
         setCallbackProductAPI(!callbackProductAPI);
+        setLoading(false);
       }
     });
   };

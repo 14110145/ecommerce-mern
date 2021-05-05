@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { GlobalState } from "../../../GlobalState";
 
 const Categories = () => {
@@ -24,7 +25,7 @@ const Categories = () => {
           }
         );
 
-        alert(res.data.msg);
+        toast.info(res.data.msg);
       } else {
         const res = await axios.post(
           "/api/category",
@@ -34,13 +35,13 @@ const Categories = () => {
           }
         );
 
-        alert(res.data.msg);
+        toast.info(res.data.msg);
       }
       setOnEdit(false);
       setCallback(!callback);
       setCategory("");
     } catch (error) {
-      alert(error.response.data.msg);
+      return toast.error(error.response.data.msg);
     }
   };
 
@@ -53,10 +54,10 @@ const Categories = () => {
   const deleteCategory = async (id) => {
     try {
       const res = await axios.delete(`/api/category/${id}`, { headers: { Authorization: token } });
-      alert(res.data.msg);
+      toast.success(res.data.msg);
       setCallback(!callback);
     } catch (error) {
-      alert(error.response.data.msg);
+      toast.error(error.response.data.msg);
     }
   };
 

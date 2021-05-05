@@ -30,7 +30,6 @@ const Header = () => {
     if (res.status === 200) {
       localStorage.removeItem("firstLogin");
       window.location.href = "/";
-      alert(res.data.msg);
     }
   };
 

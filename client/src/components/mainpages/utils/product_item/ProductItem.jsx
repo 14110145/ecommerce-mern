@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../../GlobalState";
 import Loading from "../loading/Loading";
 import BtnRender from "./BtnRender";
+import { toast } from "react-toastify";
 
 const ProductItem = ({ product, isAdmin }) => {
   const state = useContext(GlobalState);
@@ -15,10 +16,10 @@ const ProductItem = ({ product, isAdmin }) => {
   const deleteProductBtn = async () => {
     try {
       setLoading(true);
-      await deleteProducts(product._id, product.images.public_id);
+      await deleteProducts(product._id, product.images);
       setLoading(false);
     } catch (error) {
-      return alert(error.response.data.msg);
+      return toast(error.response.data.msg);
     }
     setCallbackProductAPI(!callbackProductAPI);
   };
@@ -39,7 +40,7 @@ const ProductItem = ({ product, isAdmin }) => {
     <div className="product_card">
       {isAdmin && <input type="checkbox" checked={product.checked} onChange={handleCheck} />}
 
-      <img src={product.images[0].url} />
+      <img src={product.images[0].url} alt="" />
 
       <div className="product_box">
         <h2 title={product.title}>{product.title}</h2>

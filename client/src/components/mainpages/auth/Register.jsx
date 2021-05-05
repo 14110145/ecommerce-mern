@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
+    matchPassword: "",
   });
 
   const onChangeInput = (e) => {
@@ -17,11 +19,12 @@ const Register = () => {
   const registerSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!(user.password === user.matchPassword)) return toast.error("Password does not match!");
       await axios.post("/user/register", { ...user });
       localStorage.setItem("firstLogin", true);
       window.location.href = "/";
     } catch (error) {
-      alert(error.response.data.msg);
+      return toast.error(error.response.data.msg);
     }
   };
 
@@ -41,6 +44,15 @@ const Register = () => {
           required
           placeholder="Password"
           value={user.password}
+          onChange={onChangeInput}
+        />
+        <input
+          type="password"
+          name="matchPassword"
+          autoComplete="on"
+          required
+          placeholder="Confirm Password"
+          value={user.matchPassword}
           onChange={onChangeInput}
         />
 

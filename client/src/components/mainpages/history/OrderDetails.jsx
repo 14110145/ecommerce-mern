@@ -59,7 +59,7 @@ const OrderDetails = (props) => {
               return (
                 <tr key={item._id}>
                   <td>
-                    <img src={item.images.url} alt="" />
+                    <img src={item.images[0].url} alt="" />
                   </td>
                   <td>{item.title}</td>
                   <td>{item.quantity}</td>

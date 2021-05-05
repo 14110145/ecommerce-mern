@@ -3,17 +3,18 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
+import { toast } from "react-toastify";
 
 const initialState = {
-  product_id: "",
-  title: "",
-  price: 0,
+  product_id: "123123",
+  title: "23123",
+  price: 99,
   description:
     "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae aut odit exercitationem! Id, veniam debitis assumenda distinctio eaque vitae possimus beatae, sit, ea deleniti temporibus? Molestiae sint possimus recusandae veniam.",
   content:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis molestias, aspernatur sunt aliquid, velit, unde incidunt deserunt officia eos sed vitae laudantium explicabo possimus quisquam! Placeat harum nemo inventore assumenda.",
   category: "",
-  _id: "",
+  _id: "#232",
 };
 
 const CreateProduct = () => {
@@ -36,11 +37,11 @@ const CreateProduct = () => {
     if (!isAdmin) return alert("You are not a admin!");
     const files = e.target.files;
     for (let file of files) {
-      if (!file) return alert("Plese select a image!");
+      if (!file) return toast.error("Plese select a image!");
 
-      if (file.size > 1024 * 1024) return alert("Image size too large!");
-
-      // if (file.type !== "image/jpeg" && file !== "image/png") return alert("Image format is incorrect!");
+      if (file.size > 1024 * 1024) return toast.error("Image size too large!");
+      console.log(file);
+      if (file.type !== "image/jpeg" && file.type !== "image/png") return toast.error("Image format is incorrect!");
     }
     setImages([...files]);
   };
@@ -58,8 +59,9 @@ const CreateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!isAdmin) return alert("You are not admin!");
-      if (!images) return alert("No image upload!");
+      if (!isAdmin) return toast.error("You are not admin!");
+      if (!images) return toast.error("No image upload!");
+      if (!product.category) return toast.error("Category not selected!");
 
       setLoading(true);
       let formData = new FormData();
@@ -69,7 +71,14 @@ const CreateProduct = () => {
       const res = await axios.post("/api/upload", formData, {
         headers: { "content-type": "multipart/form-data", Authorization: token },
       });
-      await axios.post("/api/products", { ...product, images: res.data }, { headers: { Authorization: token } });
+      const res_2 = await axios.post(
+        "/api/products",
+        { ...product, images: res.data },
+        { headers: { Authorization: token } }
+      );
+      if (res_2.status === 201) {
+        toast.success("Created a Product!");
+      }
       setLoading(false);
 
       setImages(false);
@@ -77,15 +86,13 @@ const CreateProduct = () => {
       setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
-      return alert(error.response.data.msg);
+      return toast.error(error.response.data.msg);
     }
   };
   if (loading)
     return (
       <div className="create_product">
-        <div className="upload">
-          <Loading />
-        </div>
+        <Loading />
       </div>
     );
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
+import { toast } from "react-toastify";
 import PaypalButton from "./PaypalButton";
 
 const Cart = () => {
@@ -84,7 +85,7 @@ const Cart = () => {
 
     setCart([]);
     addToCart([]);
-    alert("You have successfully placed an order!");
+    toast.success("You have successfully placed an order!");
   };
 
   if (cart.length === 0)
@@ -95,7 +96,7 @@ const Cart = () => {
       {cart.map((product) => {
         return (
           <div className="detail cart" key={product.product_id}>
-            <img src={product.images.url} alt="" />
+            <img src={product.images[0].url} alt="" />
             <div className="box-detail">
               <h2>{product.title}</h2>
 

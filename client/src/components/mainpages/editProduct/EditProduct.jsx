@@ -1,7 +1,7 @@
 import axios from "axios";
-import { set } from "mongoose";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
 
@@ -11,7 +11,6 @@ const EditProduct = () => {
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imagesDelete, setImagesDelete] = useState([]);
-  const [preview, setPreview] = useState([]);
 
   const [categories] = state.categoriesAPI.categories;
   const [isAdmin] = state.userAPI.isAdmin;
@@ -38,15 +37,15 @@ const EditProduct = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!isAdmin) return alert("You are not a admin!");
+    if (!isAdmin) return toast.error("You are not a admin!");
     const files = e.target.files;
     const formData = new FormData();
     for (let file of files) {
-      if (!file) return alert("Plese select a image!");
+      if (!file) return toast.error("Plese select a image!");
 
-      if (file.size > 1024 * 1024) return alert("Image size too large!");
+      if (file.size > 1024 * 1024) return toast.error("Image size too large!");
 
-      // if (file.type !== "image/jpeg" && file !== "image/png") return alert("Image format is incorrect!");
+      if (file.type !== "image/jpeg" && file.type !== "image/png") return toast.error("Image format is incorrect!");
 
       formData.append("image", file);
       images.push(file);
@@ -61,9 +60,10 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!isAdmin) return alert("You are not admin!");
-      if (!images) return alert("No image upload!");
-      if (images.length === 0) return alert("Image not yet selected!");
+      if (!isAdmin) return toast.error("You are not admin!");
+      if (!images) return toast.error("No image upload!");
+      if (images.length === 0) return toast.error("Image not yet selected!");
+      setLoading(true);
       if (imagesDelete.length !== 0) {
         imagesDelete.map(async (img) => {
           if (!img.public_id) return;
@@ -72,7 +72,14 @@ const EditProduct = () => {
       }
       const checkImages = images.every((image) => "public_id" in image);
       if (checkImages) {
-        await axios.put(`/api/products/${product._id}`, { ...product, images }, { headers: { Authorization: token } });
+        const res = await axios.put(
+          `/api/products/${product._id}`,
+          { ...product, images },
+          { headers: { Authorization: token } }
+        );
+        if (res.status === 200) {
+          toast.success("Successfully edited.");
+        }
       } else {
         let formData = new FormData();
 
@@ -83,17 +90,20 @@ const EditProduct = () => {
           headers: { "content-type": "multipart/form-data", Authorization: token },
         });
 
-        await axios.put(
+        const res_2 = await axios.put(
           `/api/products/${product._id}`,
           { ...product, images: res.data },
           { headers: { Authorization: token } }
         );
+        if (res_2.status === 200) {
+          toast.success("Successfully edited.");
+        }
       }
-
+      setLoading(false);
       setCallbackProductAPI(!callbackProductAPI);
       history.push("/");
     } catch (error) {
-      return alert(error);
+      return toast.error(error);
     }
   };
 
@@ -102,15 +112,12 @@ const EditProduct = () => {
     setImagesDelete([...imagesDelete]);
     images.splice(index, 1);
     setImages([...images]);
-    console.log({ imagesDelete, images });
   };
 
   if (loading)
     return (
       <div className="create_product">
-        <div className="upload">
-          <Loading />
-        </div>
+        <Loading />
       </div>
     );
 

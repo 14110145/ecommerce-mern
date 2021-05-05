@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const ProductsAPI = (token) => {
   const [products, setProducts] = useState([]);
@@ -26,12 +27,17 @@ const ProductsAPI = (token) => {
     await axios.put(`/api/products/${product._id}`, product, { headers: { Authorization: token } });
   };
 
-  const deleteProducts = async (id, public_id) => {
+  const deleteProducts = async (id, images) => {
     try {
-      await axios.post("/api/destroy", { public_id }, { headers: { Authorization: token } });
-      await axios.delete(`/api/products/${id}`, { headers: { Authorization: token } });
+      for (let image of images) {
+        await axios.post("/api/destroy", { public_id: image.public_id }, { headers: { Authorization: token } });
+      }
+      const res = await axios.delete(`/api/products/${id}`, { headers: { Authorization: token } });
+      if (res.status === 200) {
+        toast.success("Successfully Deleted!");
+      }
     } catch (error) {
-      return alert(error.response.data.msg);
+      return toast.error(error);
     }
   };
 

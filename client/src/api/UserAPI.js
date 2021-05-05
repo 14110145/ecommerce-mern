@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const UserAPI = (token) => {
   const [isLogged, setIsLogged] = useState(false);
@@ -29,7 +30,7 @@ const UserAPI = (token) => {
   }, [token]);
 
   const addCart = async (product) => {
-    if (!isLogged) return alert("Please login to continue buying!");
+    if (!isLogged) return toast.info("Login before buying!");
     const check = cart.every((item) => item._id !== product._id);
     if (check) {
       setCart([...cart, { ...product, quantity: 1 }]);
@@ -39,7 +40,7 @@ const UserAPI = (token) => {
         { headers: { Authorization: token } }
       );
     } else {
-      alert("This product has been added to cart!");
+      return toast.info("This product has been added to cart!");
     }
   };
 

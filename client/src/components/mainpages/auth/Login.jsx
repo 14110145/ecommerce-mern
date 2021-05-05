@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -20,7 +21,7 @@ const Login = () => {
       localStorage.setItem("firstLogin", true);
       window.location.href = "/";
     } catch (error) {
-      alert(error.response.data.msg);
+      return toast.error(error.response.data.msg);
     }
   };
 

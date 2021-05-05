@@ -6,6 +6,9 @@
   padding: 50px;
   font-size: 150%;
 }
+.detail .big-img {
+  min-width: 400px;
+}
 
 .detail img {
   max-width: 400px;

@@ -1,28 +1,49 @@
-.load-page {
-  background-color: #fff;
-  overflow: hidden;
+.loading-page {
+  min-width: 300px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.loader {
-  width: 300px;
-  height: 300px;
-  margin: auto;
+.loading-circle {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  animation: rotate 3s linear infinite;
 }
 
-.loader div {
-  width: calc(100% - 15px);
-  height: calc(100% - 15px);
-  border: 2px solid #fff;
-  border-top: 2px solid crimson;
-  border-radius: 50%;
-  animation: rotate 10s linear infinite alternate-reverse;
+.loading-circle circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 10;
+  stroke: #00a1ff;
+  stroke-linecap: round;
+  transform: translate(5px, 5px);
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  animation: animate 4s linear infinite;
 }
 
 @keyframes rotate {
-  50% {
-    transform: rotate(80deg);
+  0% {
+    transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes animate {
+  0%,
+  100% {
+    stroke-dashoffset: 440;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  50.1% {
+    stroke-dashoffset: 880;
   }
 }
