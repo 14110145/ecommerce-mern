@@ -14,9 +14,8 @@ const ProductsAPI = (token) => {
   useEffect(() => {
     console.log("Run effect ProductAPI");
     const getProducts = async () => {
-      const res = await axios.get(`/api/products?limit=${page * 9}&${category}&${sort}&title[regex]=${search}`);
-      console.log({ res });
-      setProducts(res.data.products);
+      const res = await axios.get(`/api/products?limit=${page * 8}&${category}&${sort}&title[regex]=${search}`);
+      setProducts(res.data.products.slice(0, page * 8));
       setResult(res.data.result);
     };
 

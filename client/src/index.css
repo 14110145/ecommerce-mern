@@ -13,9 +13,10 @@ code {
 }
 
 .App {
-  max-width: 1230px;
+  max-width: 100%;
   min-height: 100vh;
   margin: 0 auto;
+  margin-top: 70px;
   box-shadow: 0 0 35px #eee;
 }
 a {

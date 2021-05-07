@@ -39,6 +39,7 @@ const UserAPI = (token) => {
         { cart: [...cart, { ...product, quantity: 1 }] },
         { headers: { Authorization: token } }
       );
+      return true;
     } else {
       return toast.info("This product has been added to cart!");
     }

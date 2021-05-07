@@ -1,17 +1,24 @@
 header {
-  min-height: 70px;
+  min-height: 50px;
   width: 100%;
   overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
   border-bottom: 1px solid #ddd;
+  background-color: white;
+  padding: 10px 10px;
 }
 
 header .logo {
   flex: 1;
   margin-left: 15px;
+  color: #eee;
 }
 
 header a {

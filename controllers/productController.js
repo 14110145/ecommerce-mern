@@ -32,7 +32,7 @@ class APIfeatures {
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
+    const limit = this.queryString.limit * 1 || 8;
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit();
 
@@ -42,7 +42,6 @@ class APIfeatures {
 
 const productController = {
   getProduct: async (req, res) => {
-    console.log("params", req.params);
     console.log("query", req.query);
     try {
       const features = new APIfeatures(Products.find(), req.query).filtering().sorting().paginating();

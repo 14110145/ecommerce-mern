@@ -51,7 +51,12 @@ const ProductItem = ({ product, isAdmin }) => {
       <BtnRender
         isAdmin={isAdmin}
         product={product}
-        addCartBtn={() => addCart(product)}
+        addCartBtn={() => {
+          const result = addCart(product);
+          result.then((data) => {
+            if (data === true) return toast.success("Product added to cart successfully.");
+          });
+        }}
         deleteProductBtn={deleteProductBtn}
       />
     </div>
