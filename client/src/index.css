@@ -57,3 +57,15 @@ button {
 
 /* create product */
 @import url("./components/mainpages/createProduct/createProduct.css");
+
+@media only screen and (max-width: 640px) {
+  .App {
+    margin-top: 90px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .App {
+    margin-top: 90px;
+  }
+}

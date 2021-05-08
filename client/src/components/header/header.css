@@ -13,12 +13,17 @@ header {
   border-bottom: 1px solid #ddd;
   background-color: white;
   padding: 10px 10px;
+  z-index: 999;
 }
 
 header .logo {
   flex: 1;
   margin-left: 15px;
   color: #eee;
+}
+header .logo a {
+  font-size: 32px;
+  font-weight: 800;
 }
 
 header a {
@@ -53,4 +58,10 @@ header ul li:hover {
   right: -10px;
   padding: 4px 6px;
   font-size: 12px;
+}
+
+@media only screen and (max-width: 630px) {
+  header .logo a {
+    font-size: 20px;
+  }
 }
