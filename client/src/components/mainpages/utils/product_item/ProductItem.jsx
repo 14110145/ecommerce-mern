@@ -16,7 +16,7 @@ const ProductItem = ({ product, isAdmin }) => {
   const deleteProductBtn = async () => {
     try {
       setLoading(true);
-      await deleteProducts(product._id, product.images);
+      await deleteProducts(product._id);
       setLoading(false);
     } catch (error) {
       return toast(error.response.data.msg);
@@ -40,7 +40,7 @@ const ProductItem = ({ product, isAdmin }) => {
     <div className="product_card">
       {isAdmin && <input type="checkbox" checked={product.checked} onChange={handleCheck} />}
 
-      <img src={product.images[0].url} alt="" />
+      <img src={`data:${product.images[0].contentType};base64, ${product.images[0].imagesBase64}`} alt="" />
 
       <div className="product_box">
         <h2 title={product.title}>{product.title}</h2>

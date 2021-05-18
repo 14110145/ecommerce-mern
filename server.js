@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(cors());
 // app.use(
@@ -35,7 +35,6 @@ mongoose.connect(
 // Routes
 app.use("/user", require("./routes/userRouter"));
 app.use("/api", require("./routes/categoryRouter"));
-app.use("/api", require("./routes/uploadRouter"));
 app.use("/api", require("./routes/productRouter"));
 app.use("/api", require("./routes/paymentRouter"));
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import Filter from "../utils/filter/Filter";
 import Loading from "../utils/loading/Loading";
@@ -14,6 +14,10 @@ const Products = () => {
   const [isAdmin] = state.userAPI.isAdmin;
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
   const deleteProducts = state.productsAPI.deleteProducts;
+
+  useEffect(() => {
+    setCallbackProductAPI(!callbackProductAPI);
+  }, []);
 
   const checkAll = () => {
     setIsChecked(!isChecked);

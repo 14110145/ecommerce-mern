@@ -20,7 +20,17 @@ const productSchema = new mongoose.Schema(
     },
     description: { type: String, required: true },
     content: { type: String, required: true },
-    images: { type: Array, required: true },
+    images: [
+      {
+        fileName: {
+          type: String,
+          unique: true,
+          required: true,
+        },
+        contentType: { type: String, required: true },
+        imagesBase64: { type: String, required: true },
+      },
+    ],
     category: { type: String, required: true },
     checked: { type: Boolean, default: false },
     sold: { type: Number, default: 0 },

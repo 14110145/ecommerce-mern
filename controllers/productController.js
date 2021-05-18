@@ -1,4 +1,5 @@
 const Products = require("../models/productModel");
+const fs = require("fs");
 
 class APIfeatures {
   constructor(query, queryString) {
@@ -54,8 +55,16 @@ const productController = {
   },
   createProduct: async (req, res) => {
     try {
-      const { product_id, title, price, description, content, images, category } = req.body;
-      if (!images) return res.status(400).json({ msg: "No image upload!" });
+      const { product_id, title, price, description, content, category } = req.body;
+      const files = req.files;
+
+      if (!files) return res.status(400).json({ msg: "No image upload!" });
+
+      let imgArray = files.map((file) => {
+        let img = fs.readFileSync(file.path);
+        fs.unlinkSync(file.path);
+        return { fileName: file.filename, contentType: file.mimetype, imagesBase64: img.toString("base64") };
+      });
 
       const product = await Products.findOne({ product_id });
       if (product) return res.status(400).json({ msg: "Product already exist!" });
@@ -65,7 +74,7 @@ const productController = {
         price,
         description,
         content,
-        images,
+        images: imgArray,
         category,
       });
       await newProduct.save();

@@ -43,6 +43,7 @@ const CreateProduct = () => {
       console.log(file);
       if (file.type !== "image/jpeg" && file.type !== "image/png") return toast.error("Image format is incorrect!");
     }
+
     setImages([...files]);
   };
 
@@ -65,18 +66,20 @@ const CreateProduct = () => {
 
       setLoading(true);
       let formData = new FormData();
+      formData.append("product_id", product.product_id);
+      formData.append("title", product.title);
+      formData.append("price", product.price);
+      formData.append("description", product.description);
+      formData.append("category", product.category);
+      formData.append("content", product.content);
       for (let image of images) {
-        formData.append("image", image);
+        formData.append("images", image);
       }
-      const res = await axios.post("/api/upload", formData, {
+
+      const res = await axios.post("/api/products", formData, {
         headers: { "content-type": "multipart/form-data", Authorization: token },
       });
-      const res_2 = await axios.post(
-        "/api/products",
-        { ...product, images: res.data },
-        { headers: { Authorization: token } }
-      );
-      if (res_2.status === 201) {
+      if (res.status === 201) {
         toast.success("Created a Product!");
       }
       setLoading(false);

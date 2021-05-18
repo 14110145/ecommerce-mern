@@ -26,11 +26,8 @@ const ProductsAPI = (token) => {
     await axios.put(`/api/products/${product._id}`, product, { headers: { Authorization: token } });
   };
 
-  const deleteProducts = async (id, images) => {
+  const deleteProducts = async (id) => {
     try {
-      for (let image of images) {
-        await axios.post("/api/destroy", { public_id: image.public_id }, { headers: { Authorization: token } });
-      }
       const res = await axios.delete(`/api/products/${id}`, { headers: { Authorization: token } });
       if (res.status === 200) {
         toast.success("Successfully Deleted!");

@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const strPath = path.join(process.cwd(__dirname), "/uploads/");
+    const strPath = path.join(process.cwd(), "/uploads/");
     if (!fs.existsSync(strPath)) {
       fs.mkdirSync(strPath, {
         recursive: true,
@@ -13,7 +13,8 @@ const storage = multer.diskStorage({
     cb(null, strPath);
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
+    const ext = file.originalname.substr(file.originalname.lastIndexOf("."));
+    cb(null, file.originalname + "-" + Date.now() + ext);
   },
 });
 

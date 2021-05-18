@@ -41,11 +41,14 @@ const DetailProduct = () => {
     <>
       <div className="detail">
         <div className="big-img">
-          <img src={detailProduct.images[indexBigImg].url} alt="" />
+          <img
+            src={`data:${detailProduct.images[indexBigImg].contentType};base64, ${detailProduct.images[indexBigImg].imagesBase64}`}
+            alt=""
+          />
           <div className="thumb" ref={myRef}>
             {detailProduct.images.map((image, index) => (
               <img
-                src={image.url}
+                src={`data:${image.contentType};base64, ${image.imagesBase64}`}
                 alt=""
                 key={index}
                 onClick={() => handleTab(index)}
