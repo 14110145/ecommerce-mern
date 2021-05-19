@@ -47,8 +47,7 @@ const productController = {
     try {
       const features = new APIfeatures(Products.find(), req.query).filtering().sorting().paginating();
       const products = await features.query;
-
-      res.status(200).json({ products, result: products.length });
+      return res.status(200).json({ products, result: products.length });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }

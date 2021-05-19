@@ -15,9 +15,9 @@ const Products = () => {
   const [callbackProductAPI, setCallbackProductAPI] = state.productsAPI.callbackProductAPI;
   const deleteProducts = state.productsAPI.deleteProducts;
 
-  useEffect(() => {
-    setCallbackProductAPI(!callbackProductAPI);
-  }, []);
+  // useEffect(() => {
+  //   setCallbackProductAPI(!callbackProductAPI);
+  // }, []);
 
   const checkAll = () => {
     setIsChecked(!isChecked);
