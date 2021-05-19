@@ -11,8 +11,6 @@ const Header = () => {
   const [isAdmin] = state.userAPI.isAdmin;
   const [cart] = state.userAPI.cart;
 
-  const myRef = useRef();
-
   const adminRouter = () => {
     return (
       <>
@@ -55,27 +53,12 @@ const Header = () => {
         <Link to="/">{isAdmin ? "admin" : "eco-shop"}</Link>
       </div>
 
-      <div className="header__navbar" ref={myRef}>
-        <input type="checkbox" />
-        <div className="navbar__burger">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="bars"
-            class="svg-inline--fa fa-bars fa-w-14"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-          >
-            <path
-              fill="currentColor"
-              d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
-            ></path>
-          </svg>
-        </div>
+      <div className="header__navbar">
+        <input type="checkbox" className="navbar__input" id="navbar__input" />
+
+        <label className="navbar__overlay"></label>
+
         <ul className="navbar__link">
-          <img src={Close} alt="" className="btnClose" />
           <li>
             <Link to="/">{isAdmin ? "products" : "shopping"}</Link>
           </li>
@@ -89,16 +72,22 @@ const Header = () => {
             </li>
           )}
         </ul>
-      </div>
 
-      {isAdmin ? null : (
-        <div className="header__cart-icon">
-          <span>{cart.length ? cart.length : 0}</span>
-          <Link to="/cart">
-            <img src={Cart} alt="" width="30" />
-          </Link>
-        </div>
-      )}
+        {isAdmin ? null : (
+          <div className="navbar__cart-icon">
+            <span className="cart-icon__span">{cart.length ? cart.length : 0}</span>
+            <Link to="/cart">
+              <img src={Cart} alt="" className="cart-icon__image" />
+            </Link>
+          </div>
+        )}
+
+        <label for="navbar__input" className="navbar__burger">
+          <div className="burger__line--1"></div>
+          <div className="burger__line--2"></div>
+          <div className="burger__line--3"></div>
+        </label>
+      </div>
     </header>
   );
 };
