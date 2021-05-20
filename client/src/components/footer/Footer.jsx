@@ -54,7 +54,7 @@ const Footer = () => {
             <input type="text" name="" />
           </div>
           <div className="form__row">
-            <label for="area">Message</label>
+            <label>Message</label>
             <textarea rows="5"></textarea>
           </div>
           <button className="form__btn">Send</button>

@@ -1,14 +1,19 @@
 import axios from "axios";
-import React, { useContext, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, withRouter } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import Cart from "./icon/iconShoppingCart.svg";
 
-const Header = () => {
+const Header = (props) => {
+  const [checked, setChecked] = useState(false);
   const state = useContext(GlobalState);
   const [isLogged] = state.userAPI.isLogged;
   const [isAdmin] = state.userAPI.isAdmin;
   const [cart] = state.userAPI.cart;
+
+  useEffect(() => {
+    setChecked(false);
+  }, [props.location.pathname]);
 
   const adminRouter = () => {
     return (
@@ -46,6 +51,10 @@ const Header = () => {
     );
   };
 
+  const handleToggleCheck = () => {
+    setChecked(!checked);
+  };
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -53,9 +62,9 @@ const Header = () => {
       </div>
 
       <div className="header__navbar">
-        <input type="checkbox" className="navbar__input" id="navbar__input" />
+        <input type="checkbox" checked={checked} className="navbar__input" readOnly />
 
-        <label className="navbar__overlay"></label>
+        <label className="navbar__overlay" onClick={handleToggleCheck}></label>
 
         <ul className="navbar__link">
           <li>
@@ -81,7 +90,7 @@ const Header = () => {
           </div>
         )}
 
-        <label for="navbar__input" className="navbar__burger">
+        <label className="navbar__burger" onClick={handleToggleCheck}>
           <div className="burger__line--1"></div>
           <div className="burger__line--2"></div>
           <div className="burger__line--3"></div>
@@ -91,4 +100,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);

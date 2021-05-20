@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Route, Switch, withRouter } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import Login from "./auth/Login";
 import Register from "./auth/Register";

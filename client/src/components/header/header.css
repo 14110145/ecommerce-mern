@@ -154,6 +154,7 @@
   }
 
   .navbar__input:checked ~ .navbar__overlay {
+    cursor: pointer;
     display: block;
   }
 
