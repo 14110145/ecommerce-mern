@@ -3,7 +3,6 @@ import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import Cart from "./icon/iconShoppingCart.svg";
-import Close from "./icon/iconTimes.svg";
 
 const Header = () => {
   const state = useContext(GlobalState);

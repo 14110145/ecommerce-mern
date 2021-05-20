@@ -1,5 +1,5 @@
 .header {
-  min-height: 50px;
+  min-height: 70px;
   width: 100%;
   position: relative;
   position: fixed;
@@ -44,15 +44,13 @@
 .header .header__navbar .navbar__link li a {
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 5px 10px;
   color: #eee;
   transition: all 0.2s ease-in-out;
 }
 
 .header .header__navbar .navbar__link li:hover a {
   border-radius: 4px;
-  background-color: #eee;
-  color: #333;
+  border-bottom: 2px solid #eee;
 }
 
 .header .header__navbar .navbar__input {
@@ -63,6 +61,7 @@
   z-index: 1;
   display: inline-block;
   cursor: pointer;
+  display: none;
 }
 
 .header .header__navbar .navbar__burger div {
@@ -151,7 +150,7 @@
   }
   .header .header__navbar .navbar__link li {
     display: block;
-    margin: 16px 8px;
+    margin: 30px 8px;
   }
 
   .navbar__input:checked ~ .navbar__overlay {

@@ -10,7 +10,7 @@ const Filter = () => {
   const [search, setSearch] = state.productsAPI.search;
 
   return (
-    <div className="filter_menu">
+    <div className="filter">
       <div className="row">
         <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">All products</option>

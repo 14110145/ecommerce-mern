@@ -19,27 +19,29 @@ const Pages = () => {
   const [isAdmin] = state.userAPI.isAdmin;
 
   return (
-    <Switch>
-      <Route path="/" exact component={Products} />
+    <div className="container">
+      <Switch>
+        <Route path="/" exact component={Products} />
 
-      <Route path="/detail/:id" exact component={DetailProduct} />
+        <Route path="/detail/:id" exact component={DetailProduct} />
 
-      <Route path="/login" exact component={isLogged ? NotFound : Login} />
+        <Route path="/login" exact component={isLogged ? NotFound : Login} />
 
-      <Route path="/register" exact component={isLogged ? NotFound : Register} />
+        <Route path="/register" exact component={isLogged ? NotFound : Register} />
 
-      <Route path="/category" exact component={isAdmin ? Categories : NotFound} />
+        <Route path="/category" exact component={isAdmin ? Categories : NotFound} />
 
-      <Route path="/create_product" exact component={isAdmin ? CreateProduct : NotFound} />
-      <Route path="/edit_product/:id" exact component={isAdmin ? EditProduct : NotFound} />
+        <Route path="/create_product" exact component={isAdmin ? CreateProduct : NotFound} />
+        <Route path="/edit_product/:id" exact component={isAdmin ? EditProduct : NotFound} />
 
-      <Route path="/history" exact component={isLogged ? OrderHistory : NotFound} />
-      <Route path="/history/:id" exact component={isLogged ? OrderDetails : NotFound} />
+        <Route path="/history" exact component={isLogged ? OrderHistory : NotFound} />
+        <Route path="/history/:id" exact component={isLogged ? OrderDetails : NotFound} />
 
-      <Route path="/cart" exact component={Cart} />
+        <Route path="/cart" exact component={Cart} />
 
-      <Route path="*" component={NotFound} />
-    </Switch>
+        <Route path="*" component={NotFound} />
+      </Switch>
+    </div>
   );
 };
 
