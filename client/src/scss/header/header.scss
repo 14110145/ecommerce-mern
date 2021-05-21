@@ -1,0 +1,28 @@
+@import "../variable";
+.header {
+  width: 100%;
+  min-height: 70px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  background-color: $base-color;
+  padding: 10px;
+  z-index: 20;
+
+  &__logo {
+    flex: 1;
+    margin-left: 15px;
+
+    a {
+      text-transform: uppercase;
+      color: #eee;
+      font-size: 2rem;
+      font-weight: 500;
+    }
+  }
+}
