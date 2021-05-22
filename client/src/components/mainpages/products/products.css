@@ -33,8 +33,5 @@
 /* ProductItem */
 @import url("../utils/product_item/productitem.css");
 
-/* Filter */
-@import url("../utils/filter/filter.css");
-
 /* Loadmore */
 @import url("../utils/loadmore/loadMore.css");

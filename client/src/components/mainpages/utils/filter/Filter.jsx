@@ -11,7 +11,7 @@ const Filter = () => {
 
   return (
     <div className="filter">
-      <div className="row">
+      <div className="filter__select">
         <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">All products</option>
           {categories.map((category) => {
@@ -28,10 +28,11 @@ const Filter = () => {
         type="text"
         value={search}
         placeholder="Search"
+        className="filter__search"
         onChange={(e) => setSearch(e.target.value.toLocaleLowerCase())}
       />
 
-      <div className="row">
+      <div className="filter__select">
         <select name="category" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="">Newest</option>
           <option value="sort=oldest">Oldest</option>

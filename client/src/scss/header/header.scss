@@ -17,12 +17,143 @@
   &__logo {
     flex: 1;
     margin-left: 15px;
-
     a {
       text-transform: uppercase;
       color: #eee;
-      font-size: 2rem;
+      font-size: 3.2rem;
       font-weight: 500;
+    }
+  }
+
+  &__navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__check-box {
+    display: none;
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+  }
+
+  &__link {
+    text-decoration: none;
+    list-style: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    li {
+      display: inline-block;
+      margin: 0 20px;
+      transition: all 0.2s ease;
+      a {
+        color: #fff;
+        font-size: 1.6rem;
+      }
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__cart-icon {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+  }
+
+  &__span {
+    background: #bc5a45;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    color: white;
+    position: absolute;
+    top: -12px;
+    right: -10px;
+    padding: 2px 8px;
+    font-size: 1.2rem;
+    z-index: 1;
+  }
+
+  &__image {
+    width: 30px;
+    filter: invert(100%) sepia(9%) saturate(307%) hue-rotate(215deg) brightness(114%) contrast(87%);
+  }
+
+  &__burger {
+    z-index: 1;
+    cursor: pointer;
+    display: none;
+
+    &-line {
+      background-color: #eee;
+      height: 3px;
+      width: 24px;
+      margin: 5px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    &__burger {
+      display: inline-block;
+    }
+
+    &__check-box:checked ~ &__burger > &__burger-line {
+      transition: all 0.3s ease;
+      &--1 {
+        display: none;
+      }
+      &--2 {
+        position: relative;
+        transform: rotate(45deg);
+      }
+      &--3 {
+        transform: rotate(-45deg);
+        position: relative;
+        top: -7px;
+        right: -2px;
+      }
+    }
+
+    &__check-box:checked ~ &__overlay {
+      cursor: pointer;
+      display: block;
+    }
+
+    &__link {
+      background-color: #364f6b;
+      width: 50%;
+      flex-direction: column;
+      position: absolute;
+      align-items: center;
+      justify-content: space-around;
+      min-height: 100vh;
+      top: 68px;
+      right: 0;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.3s ease-in;
+
+      li {
+        display: block;
+        margin: 30px 20px;
+      }
+    }
+
+    &__check-box:checked ~ &__link {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 }

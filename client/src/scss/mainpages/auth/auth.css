@@ -1,0 +1,74 @@
+.login-page {
+  font-size: 20px;
+  padding-top: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.login-page__form {
+  max-width: 500px;
+  border: 2px solid #364f6b;
+  border-radius: 5px;
+  padding: 30px 50px;
+  margin: 0 auto;
+}
+
+.login-page__title {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #364f6b;
+}
+
+.login-page__input {
+  width: 100%;
+  height: 40px;
+  margin: 10px 0;
+  padding: 0 5px;
+  border: 1px solid #364f6b;
+}
+
+.login-page__row-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login-page__row-btn a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.login-page__row-btn a:visited {
+  color: #364f6b;
+}
+
+.login-page__row-btn button {
+  width: 150px;
+  height: 40px;
+  margin: 10px 0;
+  padding: 0 5px;
+  color: white;
+  border: 1px solid #364f6b;
+  background-color: #364f6b;
+  text-transform: uppercase;
+}

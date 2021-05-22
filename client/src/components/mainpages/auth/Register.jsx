@@ -30,16 +30,32 @@ const Register = () => {
 
   return (
     <div className="login-page">
-      <h2>Register</h2>
+      <form onSubmit={registerSubmit} className="login-page__form">
+        <h2 className="login-page__title">Register</h2>
+        <input
+          type="text"
+          name="name"
+          className="login-page__input"
+          required
+          placeholder="Name"
+          value={user.name}
+          onChange={onChangeInput}
+        />
 
-      <form onSubmit={registerSubmit}>
-        <input type="text" name="name" required placeholder="Name" value={user.name} onChange={onChangeInput} />
-
-        <input type="email" name="email" required placeholder="Email" value={user.email} onChange={onChangeInput} />
+        <input
+          type="email"
+          name="email"
+          className="login-page__input"
+          required
+          placeholder="Email"
+          value={user.email}
+          onChange={onChangeInput}
+        />
 
         <input
           type="password"
           name="password"
+          className="login-page__input"
           autoComplete="on"
           required
           placeholder="Password"
@@ -49,6 +65,7 @@ const Register = () => {
         <input
           type="password"
           name="matchPassword"
+          className="login-page__input"
           autoComplete="on"
           required
           placeholder="Confirm Password"
@@ -56,7 +73,7 @@ const Register = () => {
           onChange={onChangeInput}
         />
 
-        <div className="row">
+        <div className="login-page__row-btn">
           <button type="submit">Register</button>
           <Link to="/login">Login</Link>
         </div>

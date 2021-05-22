@@ -62,11 +62,11 @@ const Header = (props) => {
       </div>
 
       <div className="header__navbar">
-        <input type="checkbox" checked={checked} className="navbar__input" readOnly />
+        <input type="checkbox" checked={checked} className="header__check-box" readOnly />
 
-        <label className="navbar__overlay" onClick={handleToggleCheck}></label>
+        <label className="header__overlay" onClick={handleToggleCheck}></label>
 
-        <ul className="navbar__link">
+        <ul className="header__link">
           <li>
             <Link to="/">{isAdmin ? "products" : "shopping"}</Link>
           </li>
@@ -82,18 +82,18 @@ const Header = (props) => {
         </ul>
 
         {isAdmin ? null : (
-          <div className="navbar__cart-icon">
-            <span className="cart-icon__span">{cart.length ? cart.length : 0}</span>
+          <div className="header__cart-icon">
+            <span className="header__span">{cart.length ? cart.length : 0}</span>
             <Link to="/cart">
-              <img src={Cart} alt="" className="cart-icon__image" />
+              <img src={Cart} alt="" className="header__image" />
             </Link>
           </div>
         )}
 
-        <label className="navbar__burger" onClick={handleToggleCheck}>
-          <div className="burger__line--1"></div>
-          <div className="burger__line--2"></div>
-          <div className="burger__line--3"></div>
+        <label className="header__burger" onClick={handleToggleCheck}>
+          <div className="header__burger-line header__burger-line--1"></div>
+          <div className="header__burger-line header__burger-line--2"></div>
+          <div className="header__burger-line header__burger-line--3"></div>
         </label>
       </div>
     </header>

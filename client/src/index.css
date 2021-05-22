@@ -1,20 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  font-size: 10px;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.App {
-  height: 100vh;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
   box-shadow: 0 0 35px #eee;
+  min-height: 80vh;
   margin: 0 auto;
   max-width: 1248px;
   margin-top: 70px;
@@ -36,10 +36,10 @@ button {
 }
 
 /* Header */
-@import url("./components/header/header.css");
+@import url("./scss/header/header.css");
 
 /* Footer */
-@import url("./components/footer/footer.css");
+@import url("./scss/footer/footer.css");
 
 /* Products */
 @import url("./components/mainpages/products/products.css");
@@ -48,7 +48,7 @@ button {
 @import url("./components//mainpages/detailProduct/detailProduct.css");
 
 /* auth */
-@import url("./components/mainpages/auth/auth.css");
+@import url("./scss/mainpages/auth/auth.css");
 
 /* cart */
 @import url("./components/mainpages/cart/cart.css");
@@ -61,3 +61,5 @@ button {
 
 /* create product */
 @import url("./components/mainpages/createProduct/createProduct.css");
+
+@import url("./scss/mainpages/utils/filter/filter.css");

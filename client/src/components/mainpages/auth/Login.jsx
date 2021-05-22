@@ -27,12 +27,12 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <form onSubmit={loginSubmit} className="login-page__login-form">
-        <h2 className="login-form__title">Login</h2>
+      <form onSubmit={loginSubmit} className="login-page__form">
+        <h2 className="login-page__title">Login</h2>
         <input
           type="email"
           name="email"
-          className="login-form__input"
+          className="login-page__input"
           required
           placeholder="Email"
           value={user.email}
@@ -41,14 +41,14 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          className="login-form__input"
+          className="login-page__input"
           autoComplete="on"
           required
           placeholder="Password"
           value={user.password}
           onChange={onChangeInput}
         />
-        <div className="login-form__row-btn">
+        <div className="login-page__row-btn">
           <button type="submit">Login</button>
           <Link to="/register">Register</Link>
         </div>
